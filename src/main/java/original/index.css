@@ -1,0 +1,22 @@
+table,td{
+    border: 1px solid;
+    border-collapse: collapse;
+}
+table tr:nth-of-type(odd){
+   background-color: #F2F5A9;
+}
+table tr:nth-of-type(even){
+   background-color: #FA8258;
+}
+table tr td:last-child{
+    background-color:white;
+}
+table tr:first-child td:last-child{
+    background-color:purple;
+}
+table tr:first-child{
+   background-color:lightgreen;
+}
+.css3 span:nth-child(1){
+    background-color:blue;
+}
