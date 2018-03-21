@@ -177,7 +177,7 @@ public class PomTemplate implements Template {
         sum.append("        <dependency>" + nl);
         sum.append("            <groupId>cn.hutool</groupId>" + nl);
         sum.append("            <artifactId>hutool-all</artifactId>" + nl);
-        sum.append("            <version>4.0.6</version>" + nl);
+        sum.append("            <version>4.0.8</version>" + nl);
         sum.append("        </dependency>" + nl);
         sum.append("        <!-- tomcat部署 -->" + nl);
         sum.append("        <dependency>" + nl);

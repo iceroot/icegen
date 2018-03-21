@@ -21,30 +21,39 @@ public class CalssFormat {
         String prefix = formatConfig.get("prefix");
         String prefix2 = formatConfig.get("prefix2");
         String prefixs = formatConfig.get("prefixs");
-        if (prefix == null || "".equals(prefix)) {
-            return className;
+        if (prefix != null) {
+            prefix = prefix.replace("-", "_").toLowerCase();
+            if (!prefix.endsWith("_")) {
+                prefix += "_";
+            }
         }
-        prefix = prefix.replace("-", "_").toLowerCase();
-        if (!prefix.endsWith("_")) {
-            prefix += "_";
-        }
-        prefix2 = prefix2.replace("-", "_").toLowerCase();
-        if (!prefix2.endsWith("_")) {
-            prefix2 += "_";
+        if (prefix2 != null) {
+            prefix2 = prefix2.replace("-", "_").toLowerCase();
+            if (!prefix2.endsWith("_")) {
+                prefix2 += "_";
+            }
         }
         String classNameFormat = className.replace("-", "_").toLowerCase();
         String pre = null;
-        if (prefix2.startsWith(prefix)) {
-            if (classNameFormat.startsWith(prefix2)) {
-                pre = prefix2;
-            } else if (classNameFormat.startsWith(prefix)) {
-                pre = prefix;
+        if (prefix2 != null) {
+            if (prefix2.startsWith(prefix)) {
+                if (classNameFormat.startsWith(prefix2)) {
+                    pre = prefix2;
+                } else if (classNameFormat.startsWith(prefix)) {
+                    pre = prefix;
+                }
+            } else {
+                if (classNameFormat.startsWith(prefix)) {
+                    pre = prefix;
+                } else if (classNameFormat.startsWith(prefix2)) {
+                    pre = prefix2;
+                }
             }
         } else {
-            if (classNameFormat.startsWith(prefix)) {
-                pre = prefix;
-            } else if (classNameFormat.startsWith(prefix2)) {
-                pre = prefix2;
+            if (prefix != null) {
+                if (classNameFormat.startsWith(prefix)) {
+                    pre = prefix;
+                }
             }
         }
         if (StrUtil.isNotBlank(prefixs)) {
