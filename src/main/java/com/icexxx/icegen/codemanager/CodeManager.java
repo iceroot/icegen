@@ -30,6 +30,7 @@ import com.icexxx.icegen.template.TestUtilTemplate;
 import com.icexxx.icegen.utils.ExcelUtils;
 import com.icexxx.icegen.utils.GenContext;
 import com.icexxx.icegen.utils.PathUtils;
+import com.icexxx.icegen.utils.StringUtils;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ClassUtil;

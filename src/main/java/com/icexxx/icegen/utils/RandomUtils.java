@@ -12,8 +12,8 @@ public class RandomUtils {
     /**
      * 0为字符串,1 为 int
      * 
-     * @param str
-     * @param type
+     * @param str 原始字符串
+     * @param type 字符串需要转换的目标类型
      * @return
      */
     public static String addYinHao(String str, int type) {

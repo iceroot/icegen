@@ -1,4 +1,4 @@
-﻿package com.icexxx.icegen.main;
+package com.icexxx.icegen.main;
 
 import java.util.HashMap;
 

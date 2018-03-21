@@ -1,4 +1,6 @@
-package com.icexxx.icegen.codemanager;
+package com.icexxx.icegen.utils;
+
+import com.icexxx.icegen.codemanager.Count;
 
 public class StringUtils {
     /**

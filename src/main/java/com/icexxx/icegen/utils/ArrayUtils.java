@@ -7,7 +7,7 @@ public class ArrayUtils {
     /**
      * 将三维数组的,每个表的0行0列 组成一个 一维数组,第一格 为表名,站位预留,并 扩展为 二维数组
      * 
-     * @param javaData
+     * @param javaData 原始三维数组
      * @return
      */
     public static String[][] ThreeDim2TwoDim(String[][][] javaData, String className) {
@@ -22,7 +22,7 @@ public class ArrayUtils {
     /**
      * 将三维数组的,每个表的0行0列 组成一个 一维数组,并 扩展为 二维数组
      * 
-     * @param javaData
+     * @param javaData 原始三维数组
      * @return
      */
     public static String[][] ThreeDim2TwoDim(String[][][] javaData) {
