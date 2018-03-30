@@ -26,9 +26,6 @@ public class SpringMybatisTemplate implements Template {
         sum.append("  http://www.springframework.org/schema/aop " + nl);
         sum.append("  http://www.springframework.org/schema/aop/spring-aop-3.2.xsd\" >" + nl);
         sum.append("" + nl);
-        sum.append("    <!-- ========================================配置数据源========================================= -->"
-                + nl);
-        sum.append("    <!-- 配置数据源,使用的是alibaba的druid数据源 -->" + nl);
         sum.append(
                 "    <bean name=\"dataSource\" class=\"com.alibaba.druid.pool.DruidDataSource\" init-method=\"init\" destroy-method=\"close\">"
                         + nl);
@@ -69,38 +66,22 @@ public class SpringMybatisTemplate implements Template {
         sum.append("        <property name=\"filters\" value=\"mergeStat\" />" + nl);
         sum.append("    </bean>" + nl);
         sum.append("    " + nl);
-        sum.append("    <!-- ========================================分隔线========================================= -->"
-                + nl);
-        sum.append("    <!-- ========================================针对myBatis的配置项============================== -->"
-                + nl);
-        sum.append("    <!-- 配置sqlSessionFactory -->" + nl);
         sum.append("    <bean id=\"sqlSessionFactory\" class=\"org.mybatis.spring.SqlSessionFactoryBean\">" + nl);
-        sum.append("        <!-- 实例化sqlSessionFactory时需要使用上述配置好的数据源以及SQL映射文件 -->" + nl);
         sum.append("        <property name=\"dataSource\" ref=\"dataSource\" />" + nl);
-        sum.append("        <!-- 自动扫描mapping目录下的所有SQL映射文件-->" + nl);
         sum.append("        <property name=\"mapperLocations\" value=\"classpath:" + packPath + "/" + projectName
                 + "/mapping/*.xml\" />" + nl);
         sum.append("    </bean>" + nl);
-        sum.append("    <!-- 配置扫描器 -->" + nl);
         sum.append("    <bean class=\"org.mybatis.spring.mapper.MapperScannerConfigurer\">" + nl);
-        sum.append("        <!-- 扫描包中的所有接口 -->" + nl);
         sum.append("        <property name=\"basePackage\" value=\"" + pack + "." + projectName + ".dao\" />" + nl);
         sum.append("        <property name=\"sqlSessionFactoryBeanName\" value=\"sqlSessionFactory\" />" + nl);
         sum.append("    </bean>" + nl);
         sum.append("    " + nl);
-        sum.append("    <!-- ========================================分隔线========================================= -->"
-                + nl);
-        sum.append("    <!-- 配置Spring的事务管理器 -->" + nl);
         sum.append(
                 "    <bean id=\"transactionManager\" class=\"org.springframework.jdbc.datasource.DataSourceTransactionManager\">"
                         + nl);
         sum.append("        <property name=\"dataSource\" ref=\"dataSource\" />" + nl);
         sum.append("    </bean>" + nl);
         sum.append("" + nl);
-        sum.append("    <!-- 注解方式配置事物 -->" + nl);
-        sum.append("    <!-- <tx:annotation-driven transaction-manager=\"transactionManager\" /> -->" + nl);
-        sum.append("" + nl);
-        sum.append("    <!-- 拦截器方式配置事物 -->" + nl);
         sum.append("    <tx:advice id=\"transactionAdvice\" transaction-manager=\"transactionManager\">" + nl);
         sum.append("        <tx:attributes>" + nl);
         sum.append("            <tx:method name=\"add*\" propagation=\"REQUIRED\" />" + nl);

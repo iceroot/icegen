@@ -33,40 +33,10 @@ public class SpringmvcTemplate implements Template {
         sum.append("        http://www.springframework.org/schema/tx " + nl);
         sum.append("        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd\">" + nl);
         sum.append("" + nl);
-        sum.append("    <context:component-scan base-package=\"" + pack + "." + projectName + ".controller\"/>" + nl);
-        sum.append("    " + nl);
-        sum.append("    <!--注解映射器 -->" + nl);
-        sum.append(
-                "    <!-- <bean class=\"org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping\"/> -->"
-                        + nl);
-        sum.append("    <!--注解适配器 -->" + nl);
-        sum.append(
-                "    <!-- <bean class=\"org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter\"/> -->"
-                        + nl);
-        sum.append("    <!--" + nl);
-        sum.append("                  使用mvc:annotation-driven代替上边注解映射器和注解适配器 配置" + nl);
-        sum.append("                  mvc:annotation-driven默认加载很多的参数绑定方法," + nl);
-        sum.append(
-                "                  比如json转换解析器就默认加载了，如果使用mvc:annotation-driven就不用配置上面的RequestMappingHandlerMapping和RequestMappingHandlerAdapter"
-                        + nl);
-        sum.append("                  实际开发时使用mvc:annotation-driven" + nl);
-        sum.append("     -->" + nl);
+        sum.append("     <context:component-scan base-package=\"" + pack + "." + projectName + ".controller\"/>" + nl);
         sum.append("     <mvc:annotation-driven/>" + nl);
-        sum.append("     <!-- 2.静态资源默认servlet配置          (1)加入对静态资源的处理：js,gif,png    (2)允许使用\"/\"做整体映射  -->" + nl);
         sum.append("     <mvc:default-servlet-handler /> " + nl);
-        sum.append("     <!--" + nl);
-        sum.append("     <mvc:resources mapping=\"/img/**\" location=\"/img/\" />" + nl);
-        sum.append("     <mvc:resources mapping=\"/js/**\" location=\"/js/\" />" + nl);
-        sum.append("     <mvc:resources mapping=\"/css/**\" location=\"/css/\" />" + nl);
-        sum.append("     <mvc:resources mapping=\"/html/**\" location=\"/html/\" />" + nl);
-        sum.append("     <mvc:resources mapping=\"/jsp/**\" location=\"/jsp/\" /> " + nl);
-        sum.append("     -->" + nl);
-        sum.append("     <!-- " + nl);
-        sum.append("                  配置视图解析器 " + nl);
-        sum.append("                 解析jsp视图,默认使用jstl标签,所以classpath下得有jstl的包" + nl);
-        sum.append("     -->" + nl);
-        sum.append("    <!-- 避免IE执行ajax时,返回json出现下载文件 -->" + nl);
-        sum.append("    <bean id=\"mappingJacksonHttpMessageConverter\"" + nl);
+        sum.append("     <bean id=\"mappingJacksonHttpMessageConverter\"" + nl);
         sum.append(
                 "        class=\"org.springframework.http.converter.json.MappingJackson2HttpMessageConverter\">" + nl);
         sum.append("        <property name=\"supportedMediaTypes\">" + nl);
@@ -78,9 +48,6 @@ public class SpringmvcTemplate implements Template {
         sum.append("        </property>" + nl);
         sum.append("    </bean>" + nl);
         sum.append("" + nl);
-        sum.append(
-                "    <!-- 启动Spring mvc的注解功能,完成请求和注解pojo的映射, 配置一个基于注解的定制的WebBindingInitializer,解决日期转换问题,方法级别的处理器映射 -->"
-                        + nl);
         sum.append("    <bean" + nl);
         sum.append("        class=\"org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter\">"
                 + nl);

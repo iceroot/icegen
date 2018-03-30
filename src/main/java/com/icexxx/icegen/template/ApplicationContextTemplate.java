@@ -25,9 +25,7 @@ public class ApplicationContextTemplate implements Template {
         sum.append("  http://www.springframework.org/schema/context " + nl);
         sum.append("  http://www.springframework.org/schema/context/spring-context-3.0.xsd\">" + nl);
         sum.append("" + nl);
-        sum.append("    <!-- 引入db.properties配置文件 -->" + nl);
         sum.append("    <context:property-placeholder location=\"classpath:db.properties\" />" + nl);
-        sum.append("    <!-- 注解扫描 -->" + nl);
         sum.append("    <context:component-scan base-package=\"" + pack + "." + projectName + "\" />" + nl);
         sum.append("</beans>" + nl);
         String content = sum.toString();
