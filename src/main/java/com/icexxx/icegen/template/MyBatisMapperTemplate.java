@@ -7,6 +7,10 @@ import com.icexxx.icegen.codemanager.Data;
 import com.icexxx.icegen.codemanager.Template;
 import com.icexxx.icegen.format.FieldFormat;
 import com.icexxx.icegen.utils.ArrayUtils;
+import com.icexxx.icegen.utils.NameUtil;
+import com.icexxx.icegen.utils.PojoMapUtil;
+
+import cn.hutool.core.util.StrUtil;
 
 public class MyBatisMapperTemplate implements Template {
 
@@ -15,6 +19,7 @@ public class MyBatisMapperTemplate implements Template {
         StringBuilder sum = new StringBuilder();
         String nl = Count.NEWLINE;
         String Stu = className;
+        String st = StrUtil.lowerFirst(Stu);
         String pack = dataMap.get("domain");
         String projectName = dataMap.get("projectName");
         String[][] table = data.getTable(className);
@@ -23,13 +28,25 @@ public class MyBatisMapperTemplate implements Template {
         String tableName = jdbcTable[0][0];
         String dao = dataMap.get("dao");
         String pojo = dataMap.get("pojo");
+        String saveMapperName = dataMap.get("saveMapperName");
+        String updateMapperName = dataMap.get("updateMapperName");
+        String deleteMapperName = dataMap.get("deleteMapperName");
+        String getByIdMapperName = dataMap.get("getByIdMapperName");
+        saveMapperName = NameUtil.replace(saveMapperName, Stu, st);
+        updateMapperName = NameUtil.replace(updateMapperName, Stu, st);
+        deleteMapperName = NameUtil.replace(deleteMapperName, Stu, st);
+        getByIdMapperName = NameUtil.replace(getByIdMapperName, Stu, st);
         String idType = ArrayUtils.idType(table);
+        String mapperName = pack + "." + projectName + "." + dao + "." + Stu + "Mapper";
+        String pojoName = pack + "." + projectName + "." + pojo + "." + Stu + "";
+        String keyPojo = Stu + "{pojoName}";
+        pojoName = PojoMapUtil.get(keyPojo, pojoName);
         sum.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + nl);
         sum.append(
                 "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">"
                         + nl);
-        sum.append("<mapper namespace=\"" + pack + "." + projectName + "." + dao + "." + Stu + "Mapper\">" + nl);
-        sum.append("    <resultMap id=\"BaseResultMap\" type=\"" + pack + "." + projectName + "." + pojo + "." + Stu
+        sum.append("<mapper namespace=\"" + mapperName + "\">" + nl);
+        sum.append("    <resultMap id=\"BaseResultMap\" type=\"" + pojoName
                 + "\">" + nl);
         for (int i = 1; i < table.length; i++) {
             String fieldName = table[i][0];
@@ -47,18 +64,18 @@ public class MyBatisMapperTemplate implements Template {
         sum.append("" + genStrJoin(jdbcTable) + " " + nl);
         sum.append("    </sql>" + nl);
         sum.append(
-                "    <select id=\"selectByPrimaryKey\" parameterType=\"java.lang.Integer\" resultMap=\"BaseResultMap\">"
+                "    <select id=\"" + getByIdMapperName + "\" parameterType=\"java.lang.Integer\" resultMap=\"BaseResultMap\">"
                         + nl);
         sum.append("        select " + nl);
         sum.append("        <include refid=\"Base_Column_List\" />" + nl);
         sum.append("        from " + tableName + "" + nl);
         sum.append("        where id = #{id,jdbcType=INTEGER}" + nl);
         sum.append("    </select>" + nl);
-        sum.append("    <delete id=\"deleteByPrimaryKey\" parameterType=\"java.lang.Integer\">" + nl);
+        sum.append("    <delete id=\"" + deleteMapperName + "\" parameterType=\"java.lang.Integer\">" + nl);
         sum.append("        delete from " + tableName + "" + nl);
         sum.append("        where id = #{id,jdbcType=INTEGER}" + nl);
         sum.append("    </delete>" + nl);
-        sum.append("    <insert id=\"insert\" parameterType=\"" + pack + "." + projectName + "." + pojo + "." + Stu
+        sum.append("    <insert id=\"" + saveMapperName + "\" parameterType=\"" + pojoName
                 + "\">" + nl);
         sum.append("        insert into " + tableName + " (" + nl);
         sum.append("" + genStrJoinOther(jdbcTable) + nl);
@@ -66,8 +83,8 @@ public class MyBatisMapperTemplate implements Template {
         sum.append(genStrJoinType(table, jdbcTable));
         sum.append("        )" + nl);
         sum.append("    </insert>" + nl);
-        sum.append("    <insert id=\"insertSelective\" parameterType=\"" + pack + "." + projectName + "." + pojo + "."
-                + Stu + "\">" + nl);
+        sum.append("    <insert id=\"insertSelective\" parameterType=\"" + pojoName
+                 + "\">" + nl);
         sum.append("        insert into " + tableName + "" + nl);
         sum.append("        <trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">" + nl);
         for (int i = 1; i < table.length; i++) {
@@ -89,8 +106,8 @@ public class MyBatisMapperTemplate implements Template {
         }
         sum.append("        </trim>" + nl);
         sum.append("    </insert>" + nl);
-        sum.append("    <update id=\"updateByPrimaryKeySelective\" parameterType=\"" + pack + "." + projectName + "."
-                + pojo + "." + Stu + "\">" + nl);
+        sum.append("    <update id=\"" + updateMapperName + "\" parameterType=\"" + pojoName
+                + "\">" + nl);
         sum.append("        update " + tableName + "" + nl);
         sum.append("        <set>" + nl);
         for (int i = 1; i < table.length; i++) {
@@ -98,14 +115,14 @@ public class MyBatisMapperTemplate implements Template {
             String columnName = jdbcTable[i][0];
             String columnType = jdbcTable[i][1].toUpperCase();
             sum.append("            <if test=\"" + fieldName + " != null\">" + nl);
-            sum.append("                #{" + columnName + ",jdbcType=" + columnType + "}," + nl);
+            sum.append("                " + columnName + " = #{" + fieldName + ",jdbcType=" + columnType + "}," + nl);
             sum.append("            </if>" + nl);
         }
         sum.append("        </set>" + nl);
         sum.append("        where id = #{id,jdbcType=INTEGER}" + nl);
         sum.append("    </update>" + nl);
-        sum.append("    <update id=\"updateByPrimaryKey\" parameterType=\"" + pack + "." + projectName + "." + pojo
-                + "." + Stu + "\">" + nl);
+        sum.append("    <update id=\"updateByPrimaryKey\" parameterType=\"" + pojoName
+                + "\">" + nl);
         sum.append("        update " + tableName + "" + nl);
         sum.append("        set ");
         int index = 0;
@@ -133,7 +150,8 @@ public class MyBatisMapperTemplate implements Template {
         sum.append("    </select>" + nl);
         sum.append("    <delete id=\"deleteBatch\" parameterType=\"" + idType + "\">" + nl);
         sum.append("        delete from " + tableName + " where id in " + nl);
-        sum.append("        <foreach item=\"id_cursor\" collection=\"array\" open=\"(\" close=\")\" separator=\",\">"
+        String ids = "ids";
+        sum.append("        <foreach item=\"id_cursor\" collection=\"" + ids +"\" open=\"(\" close=\")\" separator=\",\">"
                 + nl);
         sum.append("            #{id_cursor}" + nl);
         sum.append("        </foreach>" + nl);

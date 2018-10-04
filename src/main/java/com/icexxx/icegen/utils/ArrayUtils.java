@@ -168,7 +168,7 @@ public class ArrayUtils {
                 }
             }
         }
-        return null;
+        return "Integer";
     }
 
     public static boolean isStringType(String type) {

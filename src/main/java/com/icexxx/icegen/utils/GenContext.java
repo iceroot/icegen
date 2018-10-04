@@ -4,10 +4,12 @@ import java.util.Map;
 
 public class GenContext {
     public static Map<String, String> map;
+    public static Map<String, String> mapPojo;
     public static String domainPath;
     public static String packageName;
     public static String projectName;
     public static String pojo;
+    public static boolean isSrcCode;
 
     public static Map<String, String> getMap() {
         return map;
@@ -51,5 +53,20 @@ public class GenContext {
 
     public static void setPojo(String pojo) {
         GenContext.pojo = pojo;
+    }
+    public static boolean isSrcCode() {
+        return isSrcCode;
+    }
+
+    public static void setSrcCode(boolean isSrcCode) {
+        GenContext.isSrcCode = isSrcCode;
+    }
+
+    public static Map<String, String> getMapPojo() {
+        return mapPojo;
+    }
+
+    public static void setMapPojo(Map<String, String> mapPojo) {
+        GenContext.mapPojo = mapPojo;
     }
 }

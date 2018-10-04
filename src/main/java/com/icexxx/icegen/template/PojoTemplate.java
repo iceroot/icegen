@@ -7,6 +7,7 @@ import com.icexxx.icegen.codemanager.Data;
 import com.icexxx.icegen.codemanager.Template;
 import com.icexxx.icegen.utils.EnumUtils;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 
 public class PojoTemplate implements Template {
@@ -18,12 +19,19 @@ public class PojoTemplate implements Template {
         String pack = dataMap.get("domain");
         String projectName = dataMap.get("projectName");
         String pojo = dataMap.get("pojo");
+        String ser = dataMap.get("ser");
         String enumPackage = com.icexxx.icegen.utils.Count.ENUM;
         String[][] table = data.getTable(className);
         sum.append("package " + pack + "." + projectName + "." + pojo + ";" + nl);
         String tab = "    ";
         String space = " ";
         sum.append("" + nl);
+        if ("true".equalsIgnoreCase(ser)) {
+            sum.append("import java.io.Serializable;" + nl);
+            if (!"true".equalsIgnoreCase(table[0][1])) {
+                sum.append("" + nl);
+            }
+        }
         if ("true".equalsIgnoreCase(table[0][2])) {
             sum.append("import java.math.BigDecimal;" + nl);
             if (!"true".equalsIgnoreCase(table[0][1])) {
@@ -44,9 +52,18 @@ public class PojoTemplate implements Template {
         }
         if (enumLine) {
             sum.append(nl);
-            ;
         }
-        sum.append("public class " + className + space + "{" + nl);
+        sum.append("public class " + className + space);
+        if ("true".equalsIgnoreCase(ser)) {
+            sum.append("implements Serializable ");
+        }
+        sum.append("{" + nl);
+        if ("true".equalsIgnoreCase(ser)) {
+            String uuid = RandomUtil.randomLong() + "L";
+            sum.append(tab);
+            sum.append("private static final long serialVersionUID = " + uuid + ";");
+            sum.append(nl);
+        }
         for (int i = 1; i < table.length; i++) {
             String fieldName = StrUtil.upperFirst(table[i][0]);
             String fieldType = table[i][1];
@@ -56,17 +73,19 @@ public class PojoTemplate implements Template {
             sum.append(tab);
             sum.append("private " + fieldType + " " + table[i][0] + ";");
             if ("show".equals(com.icexxx.icegen.utils.Count.POJO_COMMENT) && table[i][4] != null && !"".equals(table[i][4])) {
-                sum.append("// " + table[i][4]);
+                String comment = table[i][4];
+                comment = comment.replace("\r\n", " ");
+                comment = comment.replace("\n", " ");
+                comment = comment.replace("\t", " ");
+                sum.append("// " + comment);
             }
             sum.append(nl);
-            ;
         }
 
         sum.append("" + nl);
         sum.append(tab);
         sum.append("public " + className + "()" + space + "{" + nl);
         sum.append(nl);
-        ;
         sum.append(tab);
         sum.append("}" + nl);
         sum.append("" + nl);

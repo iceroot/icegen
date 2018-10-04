@@ -4,7 +4,7 @@
 
     <groupId>com.icexxx</groupId>
     <artifactId>icegen</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>4.0.9</version>
+            <version>4.1.14</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
@@ -107,6 +107,29 @@
                 </configuration>
             </plugin>
         </plugins>
+           <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <filtering>true</filtering>
+            <includes>
+                <include>**/*.properties</include>
+                <include>**/*.xml</include>
+                <include>**/*.js</include>
+                <include>**/*.jsp</include>
+                <include>**/*.css</include>
+                <include>**/*.md</include>
+                <include>**/*.project</include>
+                <include>**/*.classpath</include>
+                <include>**/*.jsdtscope</include>
+                <include>**/*.prefs</include>
+                <include>**/*.container</include>
+                <include>**/*.name</include>
+                <include>**/*.component</include>
+                <include>**/*.txt</include>
+                <include>original/LICENSE</include>
+            </includes>
+        </resource>
+    </resources>
     </build>
     <profiles>
         <profile>

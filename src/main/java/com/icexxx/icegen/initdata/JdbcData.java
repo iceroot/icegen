@@ -1,5 +1,6 @@
 package com.icexxx.icegen.initdata;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import com.icexxx.icegen.format.FieldFormat;
@@ -46,7 +47,12 @@ public class JdbcData {
                     String columnName = jdbcData[i][j][0];
                     String columnType = jdbcData[i][j][1];
                     fieldName = FieldFormat.columnNameCast(columnName);
-                    fieldType = FieldFormat.columnTypeCast(columnType);
+                    try {
+                        fieldType = FieldFormat.columnTypeCast(columnType);
+                    } catch (Exception e) {
+                        System.out.println(Arrays.toString(jdbcData[i][0]));
+                        e.printStackTrace();
+                    }
                     result[i][j][0] = fieldName;
                     result[i][j][1] = fieldType;
                 }

@@ -95,6 +95,10 @@ public class FieldFormat {
             return "byte[]";
         } else if ("blob".equals(type)) {
             return "byte[]";
+        } else if ("varbinary".equals(type)) {
+            return "byte[]";
+        } else if ("tinyint unsigned".equals(type)) {
+            return "Integer";
         } else {
             throw new RuntimeException("--未知的数据库类型 " + type + "--");
         }
@@ -112,6 +116,8 @@ public class FieldFormat {
             return "DECIMAL";
         } else if ("INT UNSIGNED".equals(columnType)) {
             return "INTEGER";
+        } else if ("TINYINT UNSIGNED".equals(columnType)) {
+        	return "INTEGER";
         } else if ("DATETIME".equals(columnType)) {
             return "TIMESTAMP";
         } else if ("BIGINT UNSIGNED".equals(columnType)) {

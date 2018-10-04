@@ -9,6 +9,7 @@ import com.icexxx.icegen.codemanager.Data;
 import com.icexxx.icegen.codemanager.Template;
 import com.icexxx.icegen.utils.ArrayUtils;
 import com.icexxx.icegen.utils.EnumUtils;
+import com.icexxx.icegen.utils.NameUtil;
 import com.icexxx.icegen.utils.RandomUtils;
 
 import cn.hutool.core.util.StrUtil;
@@ -25,6 +26,14 @@ public class TestTemplate implements Template {
         String projectName = dataMap.get("projectName");
         String[][] table = data.getTable(className);
         String pojo = dataMap.get("pojo");
+        String saveMapperName = dataMap.get("saveMapperName");
+        String updateMapperName = dataMap.get("updateMapperName");
+        String deleteMapperName = dataMap.get("deleteMapperName");
+        String getByIdMapperName = dataMap.get("getByIdMapperName");
+        saveMapperName = NameUtil.replace(saveMapperName, Stu, st);
+        updateMapperName = NameUtil.replace(updateMapperName, Stu, st);
+        deleteMapperName = NameUtil.replace(deleteMapperName, Stu, st);
+        getByIdMapperName = NameUtil.replace(getByIdMapperName, Stu, st);
         List<String> list = RandomUtils.list(table);
         Map<String, Boolean> importMap = RandomUtils.importMap(list);
         Boolean hutoolImport = importMap.get("hutool");
@@ -75,7 +84,7 @@ public class TestTemplate implements Template {
         sum.append("    }" + nl);
         sum.append("" + nl);
         sum.append("    // @Test" + nl);
-        sum.append("    public void add() {" + nl);
+        sum.append("    public void " + saveMapperName + "() {" + nl);
         sum.append("        " + Stu + " " + st + " = new " + Stu + "();" + nl);
         for (int i = 1; i < table.length; i++) {
             String fieldName = StrUtil.upperFirst(table[i][0]);
@@ -90,7 +99,7 @@ public class TestTemplate implements Template {
                 sum.append("        " + st + ".set" + fieldName + "(" + RandomUtils.createValue(fieldType) + ");" + nl);
             }
         }
-        sum.append("        " + st + "Service.add(" + st + ");" + nl);
+        sum.append("        " + st + "Service." + saveMapperName + "(" + st + ");" + nl);
         sum.append("    }" + nl);
         sum.append("" + nl);
         sum.append("    @Test" + nl);

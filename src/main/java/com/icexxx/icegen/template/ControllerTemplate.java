@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.icexxx.icegen.codemanager.Count;
 import com.icexxx.icegen.codemanager.Data;
 import com.icexxx.icegen.codemanager.Template;
+import com.icexxx.icegen.utils.PojoMapUtil;
 
 import cn.hutool.core.util.StrUtil;
 
@@ -19,6 +20,9 @@ public class ControllerTemplate implements Template {
         String pack = dataMap.get("domain");
         String projectName = dataMap.get("projectName");
         String pojo = dataMap.get("pojo");
+        String pojoName = pack + "." + projectName + "." + pojo + "." + Stu + "";
+        String keyPojo = Stu + "{pojoName}";
+        pojoName = PojoMapUtil.get(keyPojo, pojoName);
         sum.append("package " + pack + "." + projectName + ".controller;" + nl);
         sum.append("" + nl);
         sum.append("import java.util.Arrays;" + nl);
@@ -34,7 +38,7 @@ public class ControllerTemplate implements Template {
         sum.append("import org.springframework.web.bind.annotation.RequestMapping;" + nl);
         sum.append("import org.springframework.web.bind.annotation.ResponseBody;" + nl);
         sum.append("" + nl);
-        sum.append("import " + pack + "." + projectName + "." + pojo + "." + Stu + ";" + nl);
+        sum.append("import " + pojoName + ";" + nl);
         sum.append("import " + pack + "." + projectName + ".service." + Stu + "Service;" + nl);
         sum.append("" + nl);
         sum.append("@Controller" + nl);

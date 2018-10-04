@@ -6,6 +6,8 @@ import com.icexxx.icegen.codemanager.Count;
 import com.icexxx.icegen.codemanager.Data;
 import com.icexxx.icegen.codemanager.Template;
 import com.icexxx.icegen.utils.ArrayUtils;
+import com.icexxx.icegen.utils.NameUtil;
+import com.icexxx.icegen.utils.PojoMapUtil;
 
 import cn.hutool.core.util.StrUtil;
 
@@ -21,9 +23,20 @@ public class ServiceImplTemplate implements Template {
         String projectName = dataMap.get("projectName");
         String dao = dataMap.get("dao");
         String pojo = dataMap.get("pojo");
+        String saveMapperName = dataMap.get("saveMapperName");
+        String updateMapperName = dataMap.get("updateMapperName");
+        String deleteMapperName = dataMap.get("deleteMapperName");
+        String getByIdMapperName = dataMap.get("getByIdMapperName");
+        saveMapperName = NameUtil.replace(saveMapperName, Stu, st);
+        updateMapperName = NameUtil.replace(updateMapperName, Stu, st);
+        deleteMapperName = NameUtil.replace(deleteMapperName, Stu, st);
+        getByIdMapperName = NameUtil.replace(getByIdMapperName, Stu, st);
         String[][] table = data.getTable(className);
         String idType = ArrayUtils.idType(table);
         boolean isStringType = ArrayUtils.isStringType(idType);
+        String pojoName = pack + "." + projectName + "." + pojo + "." + Stu + "";
+        String keyPojo = Stu + "{pojoName}";
+        pojoName = PojoMapUtil.get(keyPojo, pojoName);
         sum.append("package " + pack + "." + projectName + ".service.impl;" + nl);
         sum.append("" + nl);
         sum.append("import java.util.List;" + nl);
@@ -32,7 +45,7 @@ public class ServiceImplTemplate implements Template {
         sum.append("import org.springframework.stereotype.Service;" + nl);
         sum.append("" + nl);
         sum.append("import " + pack + "." + projectName + "." + dao + "." + Stu + "Mapper;" + nl);
-        sum.append("import " + pack + "." + projectName + "." + pojo + "." + Stu + ";" + nl);
+        sum.append("import " + pojoName + ";" + nl);
         sum.append("import " + pack + "." + projectName + ".service." + Stu + "Service;" + nl);
         sum.append("" + nl);
         sum.append("@Service(\"" + st + "Service\")" + nl);
@@ -40,12 +53,12 @@ public class ServiceImplTemplate implements Template {
         sum.append("    @Autowired" + nl);
         sum.append("    private " + Stu + "Mapper " + st + "Mapper;" + nl);
         sum.append("" + nl);
-        sum.append("    public void add(" + Stu + " " + st + ") {" + nl);
-        sum.append("        " + st + "Mapper.insert(" + st + ");" + nl);
+        sum.append("    public void " + saveMapperName + "(" + Stu + " " + st + ") {" + nl);
+        sum.append("        " + st + "Mapper." + saveMapperName + "(" + st + ");" + nl);
         sum.append("    }" + nl);
         sum.append("" + nl);
-        sum.append("    public " + Stu + " getById(Integer " + st + "Id) {" + nl);
-        sum.append("        return " + st + "Mapper.selectByPrimaryKey(" + st + "Id);" + nl);
+        sum.append("    public " + Stu + " " + getByIdMapperName + "(Integer " + st + "Id) {" + nl);
+        sum.append("        return " + st + "Mapper." + getByIdMapperName + "(" + st + "Id);" + nl);
         sum.append("    }" + nl);
         sum.append("" + nl);
         sum.append("    public List<" + Stu + "> getAll() {" + nl);

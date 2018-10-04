@@ -1,5 +1,10 @@
 package com.icexxx.icegen.codemanager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +38,7 @@ import com.icexxx.icegen.utils.PathUtils;
 import com.icexxx.icegen.utils.StringUtils;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 
@@ -63,8 +69,14 @@ public class CodeManager {
             currentPath = StrUtil.removeSuffix(currentPath, "/target/classes");
             currentPath = StrUtil.addSuffixIfNot(currentPath, "/src/main/java");
         }
-        OriginalService.original(currentPath + "/original");
-        OriginalService.template(currentPath + "/template");
+        boolean isSrcCode = new File(currentPath + "/original").exists();
+        GenContext.setSrcCode(isSrcCode);
+        if (isSrcCode) {
+            OriginalService.original(currentPath + "/original");
+            OriginalService.template(currentPath + "/template");
+        } else {
+            OriginalService.jarCode("original", "template");
+        }
         CodeManager.executeFormat(configFormat);
     }
 
@@ -337,19 +349,39 @@ public class CodeManager {
         if (!path.contains("/")) {
             simpleName = path;
         }
+        simpleName = StrUtil.removePrefix(simpleName, "$");
         String original = OriginalService.getOriginal(simpleName);
         String template2 = OriginalService.getTemplate(simpleName);
         String out = dataMap.get("out");
         String basePath = out + "/" + projectName;
         path = basePath + "/" + path;
-        if (original != null) {
-            FileUtil.copy(original, path, true);
-        } else if (template2 != null) {
-            PathUtils.templateFile(template2, path, projectName);
-        } else {
-
-            String code = template.getCode(dataMap, data, packageName, className);
-            FileUtil.writeUtf8String(code, path);
+        boolean isSrcCode =  GenContext.isSrcCode;
+        if(isSrcCode){
+            if (original != null) {
+                FileUtil.copy(original, path, true);
+            } else if (template2 != null) {
+                PathUtils.templateFile(template2, path, projectName);
+            } else {
+                String code = template.getCode(dataMap, data, packageName, className);
+                FileUtil.writeUtf8String(code, path);
+            }
+        }else{
+            if (original != null) {
+                InputStream resourceAsStream = CodeManager.class.getClassLoader().getResourceAsStream(original);
+                OutputStream outputStream = null;
+                FileUtil.mkParentDirs(path);
+                try {
+                    outputStream = new FileOutputStream(new File(path));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                IoUtil.copy(resourceAsStream, outputStream);
+            } else if (template2 != null) {
+                PathUtils.templateFileJar(template2, path, projectName);
+            } else {
+                String code = template.getCode(dataMap, data, packageName, className);
+                FileUtil.writeUtf8String(code, path);
+            }
         }
     }
 
@@ -361,6 +393,9 @@ public class CodeManager {
             }
             if (path.contains("${projectName}")) {
                 path = path.replace("${projectName}", projectName);
+            }
+            if (path.contains("${projectNameIce}")) {
+            	path = path.replace("${projectNameIce}", projectName);
             }
             if (path.contains("${pojo}")) {
                 path = path.replace("${pojo}", pojo);
@@ -387,6 +422,11 @@ public class CodeManager {
         String out = config.get("out");
         String pojo = config.get("pojo");
         String dao = config.get("dao");
+        String ser = config.get("ser");
+        String saveMapperName = config.get("saveMapperName");
+        String updateMapperName = config.get("updateMapperName");
+        String deleteMapperName = config.get("deleteMapperName");
+        String getByIdMapperName = config.get("getByIdMapperName");
         String urlDatabaseName = DataBaseUtils.analyzeUrl(url);
         if (databaseName == null || "".equals(databaseName.trim())) {
             config.put("databaseName", urlDatabaseName);
@@ -442,6 +482,21 @@ public class CodeManager {
         }
         if (StrUtil.isBlank(dao)) {
             config.put("dao", "dao");
+        }
+        if (StrUtil.isBlank(ser)) {
+            config.put("ser", "false");
+        }
+        if (StrUtil.isBlank(saveMapperName)) {
+            config.put("saveMapperName", "save${upperFirst}");
+        }
+        if (StrUtil.isBlank(updateMapperName)) {
+            config.put("updateMapperName", "update${upperFirst}");
+        }
+        if (StrUtil.isBlank(deleteMapperName)) {
+            config.put("deleteMapperName", "delete${upperFirst}");
+        }
+        if (StrUtil.isBlank(getByIdMapperName)) {
+            config.put("getByIdMapperName", "get${upperFirst}ById");
         }
         return config;
     }
