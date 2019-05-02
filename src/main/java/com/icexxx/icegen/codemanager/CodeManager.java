@@ -98,6 +98,13 @@ public class CodeManager {
             }
         }
 
+        String pojoPack = configFormat.get("pojoPack");
+        if (StrUtil.isNotBlank(pojoPack)) {
+        	pojoPack = "/" + pojoPack;
+        } else {
+        	pojoPack = "";
+        }
+
         template = new PomTemplate();
         data = new PojoData();
         path = "pom.xml";
@@ -177,7 +184,7 @@ public class CodeManager {
         for (int i = 1; i < javaData.length; i++) {
             template = new PojoTemplate();
             data = new JavaData(javaData, i);
-            path = "src/main/java/${domainPath}/${projectName}/${pojo}/" + "${className}" + ".java";
+            path = "src/main/java/${domainPath}/${projectName}" + pojoPack + "/${pojo}/" + "${className}" + ".java";
             writeFile(template, data, path);
         }
         for (int i = 1; i < javaData.length; i++) {
@@ -427,6 +434,7 @@ public class CodeManager {
         String updateMapperName = config.get("updateMapperName");
         String deleteMapperName = config.get("deleteMapperName");
         String getByIdMapperName = config.get("getByIdMapperName");
+        String effective = config.get("effective");
         String urlDatabaseName = DataBaseUtils.analyzeUrl(url);
         if (databaseName == null || "".equals(databaseName.trim())) {
             config.put("databaseName", urlDatabaseName);
@@ -497,6 +505,16 @@ public class CodeManager {
         }
         if (StrUtil.isBlank(getByIdMapperName)) {
             config.put("getByIdMapperName", "get${upperFirst}ById");
+        }
+        if (StrUtil.isBlank(effective)) {
+            config.put("effective", "1");
+            config.put("invalid", "0");
+        } else if("0".equals(effective)){
+            config.put("effective", "0");
+            config.put("invalid", "1");
+        } else if("1".equals(effective)){
+        	config.put("effective", "1");
+        	config.put("invalid", "0");
         }
         return config;
     }

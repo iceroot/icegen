@@ -6,6 +6,7 @@ import com.icexxx.icegen.codemanager.Count;
 import com.icexxx.icegen.codemanager.Data;
 import com.icexxx.icegen.codemanager.Template;
 import com.icexxx.icegen.utils.EnumUtils;
+import com.icexxx.icegen.utils.PojoMapUtil;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -22,7 +23,11 @@ public class PojoTemplate implements Template {
         String ser = dataMap.get("ser");
         String enumPackage = com.icexxx.icegen.utils.Count.ENUM;
         String[][] table = data.getTable(className);
-        sum.append("package " + pack + "." + projectName + "." + pojo + ";" + nl);
+        String pojoName = pack + "." + projectName + "." + pojo + "." + className + "";
+        String keyPojo = className + "{pojoName}";
+        pojoName = PojoMapUtil.get(keyPojo, pojoName);
+        pojoName = StrUtil.subBefore(pojoName, ".", true);
+        sum.append("package " + pojoName + ";" + nl);
         String tab = "    ";
         String space = " ";
         sum.append("" + nl);

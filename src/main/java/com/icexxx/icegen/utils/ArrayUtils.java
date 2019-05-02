@@ -3,6 +3,8 @@ package com.icexxx.icegen.utils;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import cn.hutool.core.util.StrUtil;
+
 public class ArrayUtils {
     /**
      * 将三维数组的,每个表的0行0列 组成一个 一维数组,第一格 为表名,站位预留,并 扩展为 二维数组
@@ -177,4 +179,29 @@ public class ArrayUtils {
         }
         return false;
     }
+	public static boolean containInArray(String[][] data, String tagValue) {
+		if (StrUtil.isBlank(tagValue)) {
+			return false;
+		}
+		if (data == null) {
+			return false;
+		}
+		if (data.length == 0) {
+			return false;
+		}
+		for (int i = 0; i < data.length; i++) {
+			String[] row = data[i];
+			if (row == null) {
+				continue;
+			}
+			if (row.length == 0) {
+				continue;
+			}
+			String name = row[0];
+			if (tagValue.equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

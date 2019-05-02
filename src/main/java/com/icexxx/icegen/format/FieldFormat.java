@@ -7,6 +7,9 @@ import cn.hutool.core.util.StrUtil;
 public class FieldFormat {
     public static String columnNameCast(String columnName) {
         columnName = columnName.replace("-", "_");
+        if(isCamel(columnName)) {
+        	return columnName;
+        }
         String[] columnNameSplit = columnName.split("_");
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < columnNameSplit.length; i++) {
@@ -161,4 +164,31 @@ public class FieldFormat {
         }
         return newTable;
     }
+    
+	public static boolean isCamel(String str) {
+		if (StrUtil.isBlank(str)) {
+			return false;
+		}
+		if (str.length() == 1) {
+			return false;
+		}
+		char first = str.charAt(0);
+		if (Character.isUpperCase(first)) {
+			return false;
+		}
+		if (str.contains("_")) {
+			return false;
+		}
+		if (Character.isLowerCase(first)) {
+			for (int i = 1; i < str.length(); i++) {
+				char chr = str.charAt(i);
+				if (Character.isUpperCase(chr)) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return false;
+		}
+	}
 }

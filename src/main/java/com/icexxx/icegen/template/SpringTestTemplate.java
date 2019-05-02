@@ -10,6 +10,7 @@ import com.icexxx.icegen.codemanager.Template;
 import com.icexxx.icegen.utils.ArrayUtils;
 import com.icexxx.icegen.utils.EnumUtils;
 import com.icexxx.icegen.utils.NameUtil;
+import com.icexxx.icegen.utils.PojoMapUtil;
 import com.icexxx.icegen.utils.RandomUtils;
 
 import cn.hutool.core.util.StrUtil;
@@ -38,6 +39,9 @@ public class SpringTestTemplate implements Template {
         Map<String, Boolean> importMap = RandomUtils.importMap(list);
         Boolean hutoolImport = importMap.get("hutool");
         Boolean otherImport = importMap.get("other");
+        String pojoName = pack + "." + projectName + "." + pojo + "." + Stu + "";
+        String keyPojo = Stu + "{pojoName}";
+        pojoName = PojoMapUtil.get(keyPojo, pojoName);
         sum.append("package " + pack + "." + projectName + ".test;" + nl);
         sum.append("" + nl);
         if ("true".equalsIgnoreCase(table[0][2])) {
@@ -65,7 +69,7 @@ public class SpringTestTemplate implements Template {
         sum.append("import org.springframework.test.context.ContextConfiguration;" + nl);
         sum.append("import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;" + nl);
         sum.append("" + nl);
-        sum.append("import " + pack + "." + projectName + "." + pojo + "." + Stu + ";" + nl);
+        sum.append("import " + pojoName + ";" + nl);
         sum.append("import " + pack + "." + projectName + ".service." + Stu + "Service;" + nl);
         sum.append("" + nl);
         sum.append("@RunWith(SpringJUnit4ClassRunner.class)" + nl);

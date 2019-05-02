@@ -31,6 +31,9 @@ public class Main {
         config.put("url", "jdbc:mysql://127.0.0.1:3306/ssm");
         config.put("out", "C:/Users/Administrator/Desktop");
         config.put("baseDao", "com.iceyyy.BaseDao");
+        // config.put("pojoPack", "abc");
+        // config.put("delete", "is_del");
+        // config.put("effective", "1");
         config.put("enum", "");
         // config.put("databaseName","test");
         // config.put("debug", "true");

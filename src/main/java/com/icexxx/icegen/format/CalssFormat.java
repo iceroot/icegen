@@ -67,13 +67,13 @@ public class CalssFormat {
                 }
             }
         }
+        String classNameRemove = className;
+        boolean saveLine = BooleanUtils.format(formatConfig.get("saveLine"), true);
         if (pre != null) {
             int len = pre.length();
-            boolean saveLine = BooleanUtils.format(formatConfig.get("saveLine"), true);
-            String classNameRemove = className.substring(len);
-            return format(classNameRemove, saveLine);
+            classNameRemove = className.substring(len);
         }
-        return className;
+        return format(classNameRemove, saveLine);
     }
 
     public static String classNameCast(String columnName) {

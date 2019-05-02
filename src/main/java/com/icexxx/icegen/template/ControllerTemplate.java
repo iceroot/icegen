@@ -20,7 +20,13 @@ public class ControllerTemplate implements Template {
         String pack = dataMap.get("domain");
         String projectName = dataMap.get("projectName");
         String pojo = dataMap.get("pojo");
-        String pojoName = pack + "." + projectName + "." + pojo + "." + Stu + "";
+        String pojoPack = dataMap.get("pojoPack");
+        if (StrUtil.isNotBlank(pojoPack)) {
+        	pojoPack = "." + pojoPack;
+        } else {
+        	pojoPack = "";
+        }
+        String pojoName = pack + "." + projectName + pojoPack + "." + pojo + "." + Stu + "";
         String keyPojo = Stu + "{pojoName}";
         pojoName = PojoMapUtil.get(keyPojo, pojoName);
         sum.append("package " + pack + "." + projectName + ".controller;" + nl);
