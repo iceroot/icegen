@@ -143,7 +143,7 @@ public class MyBatisMapperTemplate implements Template {
 		sum.append("    <select id=\"findAll\" resultMap=\"BaseResultMap\">" + nl);
 		sum.append("        select " + nl);
 		sum.append("        <include refid=\"Base_Column_List\"/>" + nl);
-		if(ArrayUtils.containInArray(jdbcTable, delete)) {
+		if (ArrayUtils.containInArray(jdbcTable, delete)) {
 			sum.append("        from " + tableName + " " + nl);
 			sum.append("        where 1 = 1 and " + delete + " = " + effective + " " + nl);
 		} else {
@@ -151,9 +151,9 @@ public class MyBatisMapperTemplate implements Template {
 		}
 		sum.append("    </select>" + nl);
 		sum.append("    <delete id=\"deleteBatch\" parameterType=\"" + idType + "\">" + nl);
-		if(ArrayUtils.containInArray(jdbcTable, delete)) {
+		if (ArrayUtils.containInArray(jdbcTable, delete)) {
 			sum.append("        update " + tableName + " set is_del = " + invalid + " where id in " + nl);
-		}else {
+		} else {
 			sum.append("        delete from " + tableName + " where id in " + nl);
 		}
 		String ids = "ids";
