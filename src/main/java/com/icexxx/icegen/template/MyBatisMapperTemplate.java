@@ -150,6 +150,36 @@ public class MyBatisMapperTemplate implements Template {
 			sum.append("        from " + tableName + " " + nl);
 		}
 		sum.append("    </select>" + nl);
+		sum.append("    <select id=\"listAll\" resultMap=\"BaseResultMap\" parameterType=\"" + pojoName + "\">" + nl);
+		sum.append("        select " + nl);
+		sum.append("        <include refid=\"Base_Column_List\"/>" + nl);
+		if (ArrayUtils.containInArray(jdbcTable, delete)) {
+			sum.append("        from " + tableName + " " + nl);
+			sum.append("        where 1 = 1 and " + delete + " = " + effective + " " + nl);
+		} else {
+			sum.append("        from " + tableName + " " + nl);
+			sum.append("        where 1 = 1 " + nl);
+		}
+		for (int i = 1; i < table.length; i++) {
+			String fieldName = table[i][0];
+			String fieldType = table[i][1];
+			String columnName = jdbcTable[i][0];
+			String columnType = jdbcTable[i][1].toUpperCase();
+			if ("id".equalsIgnoreCase(fieldName)) {
+				continue;
+			}
+			sum.append("        ");
+			if("String".equals(fieldType)){
+				sum.append("<if test = \""+ st + "." +fieldName+" != null and " + st + "." + fieldName + ".trim() != ''\">" + nl);
+			}else{
+				sum.append("<if test = \""+ st + "." +fieldName+" != null\">" + nl);
+			}
+			sum.append("            ");
+			sum.append("and " + columnName + " = #{" + st + "." + fieldName + ",jdbcType=" + columnType + "}" + nl);
+			sum.append("        ");
+			sum.append("</if>" + nl);
+		}
+		sum.append("    </select>" + nl);
 		sum.append("    <delete id=\"deleteBatch\" parameterType=\"" + idType + "\">" + nl);
 		if (ArrayUtils.containInArray(jdbcTable, delete)) {
 			sum.append("        update " + tableName + " set is_del = " + invalid + " where id in " + nl);
