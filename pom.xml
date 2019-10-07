@@ -4,7 +4,7 @@
 
     <groupId>com.icexxx</groupId>
     <artifactId>icegen</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>4.5.7</version>
+            <version>4.6.8</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
