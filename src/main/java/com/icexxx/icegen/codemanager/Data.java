@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public interface Data {
 
-	HashMap<String, String> getData();
+    HashMap<String, String> getData();
 
-	public String[][] getTable(String clasName);
+    public String[][] getTable(String clasName);
 }
