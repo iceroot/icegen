@@ -76,6 +76,19 @@ public class PojoTemplate implements Template {
 				fieldType = fieldName;
 			}
 			sum.append(tab);
+	        if ("span".equals(com.icexxx.icegen.utils.Count.POJO_COMMENT) && table[i][4] != null
+	                    && !"".equals(table[i][4])) {
+	            String comment = table[i][4];
+	            comment = comment.replace("\r\n", " ");
+	            comment = comment.replace("\n", " ");
+	            comment = comment.replace("\t", " ");
+	            sum.append(tab);
+	            sum.append("/**");
+	            sum.append(tab);
+	            sum.append(" * " + comment);
+	            sum.append(tab);
+	            sum.append(" */");
+	        }
 			sum.append("private " + fieldType + " " + table[i][0] + ";");
 			if ("show".equals(com.icexxx.icegen.utils.Count.POJO_COMMENT) && table[i][4] != null
 					&& !"".equals(table[i][4])) {

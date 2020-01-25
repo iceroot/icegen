@@ -62,7 +62,7 @@ public class DaoTemplate implements Template {
 		sum.append("    List<" + Stu + "> listAll(" + "@Param(\"" + st + "\") " + Stu + " " + st + ");" + nl);
 		sum.append("" + nl);
 		String ids = "ids";
-		sum.append("    int deleteBatch(" + "@Param(\"" + ids + "\")" + idType + "[] " + ids + ");" + nl);
+		sum.append("    int deleteBatch(" + "@Param(\"" + ids + "\") List<" + idType + "> " + ids + ");" + nl);
 		sum.append("}" + nl);
 		String content = sum.toString();
 		return content;

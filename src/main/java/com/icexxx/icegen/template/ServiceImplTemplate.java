@@ -48,6 +48,8 @@ public class ServiceImplTemplate implements Template {
 		sum.append("import " + pojoName + ";" + nl);
 		sum.append("import " + pack + "." + projectName + ".service." + Stu + "Service;" + nl);
 		sum.append("" + nl);
+		sum.append("import cn.hutool.core.convert.Convert;" + nl);
+		sum.append("" + nl);
 		sum.append("@Service(\"" + st + "Service\")" + nl);
 		sum.append("public class " + Stu + "ServiceImpl implements " + Stu + "Service {" + nl);
 		sum.append("    @Autowired" + nl);
@@ -65,9 +67,9 @@ public class ServiceImplTemplate implements Template {
 		sum.append("        return " + st + "Mapper.findAll();" + nl);
 		sum.append("    }" + nl);
 		sum.append("" + nl);
-		sum.append("    public int deleteBatch(String[] ids) {" + nl);
+		sum.append("    public int deleteBatch(List<" + "String" + "> ids) {" + nl);
 		if (!isStringType) {
-			sum.append("        " + idType + "[] idsInt = idsInt(ids);" + nl);
+			sum.append("        " + "List<" + idType + "> idsInt = Convert.toList(" + idType + ".class, ids);" + nl);
 		}
 		if (!isStringType) {
 			sum.append("        return " + st + "Mapper.deleteBatch(idsInt);" + nl);
@@ -76,19 +78,6 @@ public class ServiceImplTemplate implements Template {
 		}
 		sum.append("    }" + nl);
 		sum.append("" + nl);
-		if (!isStringType) {
-			String idTypeFun = "Int";
-			if ("Long".equalsIgnoreCase(idType)) {
-				idTypeFun = "Long";
-			}
-			sum.append("    private " + idType + "[] idsInt(String[] ids) {" + nl);
-			sum.append("        " + idType + "[] nums = new " + idType + "[ids.length];" + nl);
-			sum.append("        for (int i = 0; i < ids.length; i++) {" + nl);
-			sum.append("            nums[i] = " + idType + ".parse" + idTypeFun + "(ids[i]);" + nl);
-			sum.append("        }" + nl);
-			sum.append("        return nums;" + nl);
-			sum.append("    }" + nl);
-		}
 		sum.append("}" + nl);
 		String content = sum.toString();
 		return content;

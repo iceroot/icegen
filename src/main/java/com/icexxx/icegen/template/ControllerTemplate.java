@@ -31,7 +31,6 @@ public class ControllerTemplate implements Template {
 		pojoName = PojoMapUtil.get(keyPojo, pojoName);
 		sum.append("package " + pack + "." + projectName + ".controller;" + nl);
 		sum.append("" + nl);
-		sum.append("import java.util.Arrays;" + nl);
 		sum.append("import java.util.List;" + nl);
 		sum.append("" + nl);
 		sum.append("import javax.servlet.http.HttpServletRequest;" + nl);
@@ -41,6 +40,8 @@ public class ControllerTemplate implements Template {
 		sum.append("" + nl);
 		sum.append("import org.springframework.beans.factory.annotation.Autowired;" + nl);
 		sum.append("import org.springframework.stereotype.Controller;" + nl);
+		sum.append("import org.springframework.util.CollectionUtils;" + nl);
+		sum.append("import org.springframework.util.StringUtils;" + nl);
 		sum.append("import org.springframework.web.bind.annotation.RequestMapping;" + nl);
 		sum.append("import org.springframework.web.bind.annotation.ResponseBody;" + nl);
 		sum.append("" + nl);
@@ -77,10 +78,13 @@ public class ControllerTemplate implements Template {
 		sum.append("    // http://127.0.0.1:8080/" + projectName + "/" + st + "/batchDelete.html?ids=1001,1002" + nl);
 		sum.append("    @RequestMapping(\"/batchDelete\")" + nl);
 		sum.append(
-				"    public String batchDelete(String[] ids, HttpServletRequest request, HttpServletResponse response) {"
+				"    public String batchDelete(String ids, HttpServletRequest request, HttpServletResponse response) {"
 						+ nl);
-		sum.append("        log.info(\"ids=\" + Arrays.toString(ids));" + nl);
-		sum.append("        int count = " + st + "Service.deleteBatch(ids);" + nl);
+		sum.append("        log.info(\"ids=\" + ids);" + nl);
+		sum.append("        @SuppressWarnings(\"unchecked\")" + nl);
+		sum.append("        List<String> arrayToList =" + nl);
+		sum.append("        CollectionUtils.arrayToList(StringUtils.tokenizeToStringArray(ids, \",\"));" + nl);
+		sum.append("        int count = " + st + "Service.deleteBatch(arrayToList);" + nl);
 		sum.append("        System.out.println(\"删除\" + count + \"条记录\");" + nl);
 		// sum.append(" List<"+Stu+"> "+st+" = "+st+"Service.getAll();" + nl );
 		// sum.append(" request.setAttribute(\""+st+"List"+"\", "+st+");" + nl

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.icexxx.icegen.codemanager.Count;
 import com.icexxx.icegen.codemanager.Data;
 import com.icexxx.icegen.codemanager.Template;
+import com.icexxx.icegen.utils.ArrayUtils;
 import com.icexxx.icegen.utils.NameUtil;
 import com.icexxx.icegen.utils.PojoMapUtil;
 
@@ -32,6 +33,8 @@ public class ServiceTemplate implements Template {
 		String pojoName = pack + "." + projectName + "." + pojo + "." + Stu + "";
 		String keyPojo = Stu + "{pojoName}";
 		pojoName = PojoMapUtil.get(keyPojo, pojoName);
+	    String[][] table = data.getTable(className);
+	    String idType = ArrayUtils.idType(table);
 		sum.append("package " + pack + "." + projectName + ".service;" + nl);
 		sum.append("" + nl);
 		sum.append("import java.util.List;" + nl);
@@ -45,7 +48,7 @@ public class ServiceTemplate implements Template {
 		sum.append("" + nl);
 		sum.append("    List<" + Stu + "> getAll();" + nl);
 		sum.append("" + nl);
-		sum.append("    int deleteBatch(String[] ids);" + nl);
+		sum.append("    int deleteBatch(List<" + "String" + "> ids);" + nl);
 		sum.append("}" + nl);
 		String content = sum.toString();
 		return content;
